@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  ai-nft-backend:
+    depends_on:
+      - ai-nft-mongo
+    build: .
+    container_name: ai-nft-backend
+    command: npm run start:dev
+    ports:
+      - "4000:4000"
+    environment:
+      NODE_ENV: dev
+      DEBUG: nodejs-docker-express:*
+    env_file:
+      - .env.dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ai-nft-backend-deps:/app/node_modules
+  ai-nft-mongo:
+    image: mongo
+    restart: always
+    container_name: ai-nft-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ai-nft-mongo-vol:/data/db
+
+volumes:
+  ai-nft-mongo-vol:
+  ai-nft-backend-deps:
